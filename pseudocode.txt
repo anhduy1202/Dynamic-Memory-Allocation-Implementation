@@ -14,7 +14,7 @@ GLOBAL: allocated_blocks_list: List (Array) of in-use blocks of memory (can be a
 BLOCK_LIST STUFF:
 
 - ADD ENTRY (base pointer, size)
-if number of entries in list is less than list_size
+if number of entries in list is less than list size
    create entry
    add at end
    increase number of entries in list
