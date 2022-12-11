@@ -1,0 +1,8 @@
+- verify that we can't pass negative block size
+- verify thare is no overlap in the allocated addresses.
+- verify that it's never 0, even if we request 0 bytes
+- Verify that we'll create a brand new block if we're allocating a memory block that's bigger than our internal size (not enough free blocks)  
+- Verify that we can't free or realloc() non-existing memory block
+- Verify that we can't free a memory block that already got free
+- Verify that our allocated_blocks_list and our free_blocks_list organize the memory block in min heap order such that memory block with smaller size will go on top
+

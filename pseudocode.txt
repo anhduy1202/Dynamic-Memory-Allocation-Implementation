@@ -1,0 +1,107 @@
+
+GLOBAL: free_blocks_list: List (Array) of free blocks of memory (can be array, LL, MinHEap...)
+(
+  void* block_base;
+  unsigned block_size;
+)
+GLOBAL: allocated_blocks_list: List (Array) of in-use blocks of memory (can be array, LL, MinHEap...)
+(
+  void* block_base;
+  unsigned block_size;
+)
+
+// ASSUME that block list is a fixed size array
+BLOCK_LIST STUFF:
+
+- ADD ENTRY (base pointer, size)
+if number of entries in list is less than list_size
+   create entry
+   add at end
+   increase number of entries in list
+  return
+return LIST_FULL
+
+
+- REMOVE ENTRY (base pointer)
+for each entry in list
+  if entry's base pointer = test_value
+    move all subsequent list entries left by one
+    return
+return: NOT FOUND
+
+- FIND BY BASE PTR (test_value)
+for each entry in list
+  if entry's base pointer = test_value
+    return this entry
+return: NOT FOUND
+
+- FIND SIZE GREATER EQUAL THAN (test_size)
+for each entry in list
+  if entry's size value >= test_size
+    return this entry
+return: NOT FOUND
+
+- DEFRAGMENT
+if list is empty
+    return
+sort list by base_pointer
+current_block = list[0]
+for (ix in 1..block count)
+  if 1 + the end of current_block = list[ix] base pointer
+    // they are adjacent
+    current_block.size += list[ix].size
+    "delete" list[ix]
+  else
+    current_block = list[ix]
+
+
+
+
+
+
+
+
+// if memory needs to be allocated, allocate it
+MALLOC Function:
+(accept one parameter, "requested_size")
+
+if we DO NOT have a (block) available big enough for requested_size in the free_blocks_list
+  // defragment free list and check again
+  ice_block = allocate a huge thing with sbrk
+  add ice_block to free_blocks_list
+  big_enough_free_block = ice_block
+else
+  set big_enough_free_block  (block that's big enough)
+
+remove big_enough_free_block from the free_blocks_list
+ice_cube = chip off ONE "requested size" chunk from the big_enough_free_block
+if any of the big_enough_block is left over
+   put the rest of the big_enough_block in the free_blocks_list
+
+add ice_cube data to allocated_blocks_list
+return ice_cube to malloc caller
+
+
+
+// return a chunk of memory to the free_blocks_list
+FREE function: (takes a previously allocated base_pointer)
+
+look through allocated_blocks_list and find this base pointer
+take base_pointer and its size and put on free_blocks_list
+remove it from allocated_blocks_list
+
+
+REALLOC: (take the original size of the memory block pointed to by base_pointer, take the new_size of memory block that we want)
+
+look through allocated_blocks_list and find this base pointer
+if it exists
+  remove it from allocated_blocks_list for reallocation
+if block exists in allocated_blocks_list
+  Remove the original block from allocated_blocks_list
+  Create new block with new_size 
+    void *new_block = malloc(new_size)
+  Push the new block to allocated_blocks_list
+  Push the original block to free_blocks_list
+  return address of new allocated block
+else (the block not exist )
+  Print the error and return
