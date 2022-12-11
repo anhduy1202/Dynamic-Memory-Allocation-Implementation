@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "block_list.h"
 #include "my_malloc.h"
 
 #define MB (1024 * 1024)
@@ -8,16 +9,12 @@
 
 #define DEFAULT_NUMBER_OF_ALLOCS 10
 #define MAX_SIZE_REQUESTED 1024
-
-// #ifdef NEW_MALLOC
-// uncomment these to use our versions
 #define MALLOC my_malloc
 #define FREE my_free
-// #else
-// // uncomment these to use system versions
-// #define MALLOC malloc
-// #define FREE free
-// #endif
+
+// Define block list, memory block
+BlockEntry free_blocks_list;
+BlockEntry allocated_blocks_list;
 
 int main(int argc, char *argv[]) {
 

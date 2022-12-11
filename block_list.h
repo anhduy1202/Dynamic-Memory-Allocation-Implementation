@@ -15,14 +15,9 @@ typedef struct block_list {
 
 // BLOCK_LIST STUFF:
 // - ADD ENTRY (base pointer, size)
-void *add_entry(void *base_pointer, Block block) {
-  //   if number of entries in list is less than list size
-  //    create entry
-  //    add at end
-  //    increase number of entries in list
-  //   return
-  // return LIST_FULL
-}
+void *add_entry(void *base_pointer, Block block);
+void *remove_entry(void *base_pointer);
+void *order_array(BlockEntry *block_list);
 // - REMOVE ENTRY (base pointer)
 // - FIND BY BASE PTR (test_value)
 // - FIND SIZE GREATER EQUAL THAN (test_size)
